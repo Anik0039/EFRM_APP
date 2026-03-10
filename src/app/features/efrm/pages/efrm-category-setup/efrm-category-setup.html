@@ -80,9 +80,28 @@
               </span>
             </div>
             <div class="detail-actions">
-              <button pButton type="button" label="Edit" class="outline-button"></button>
-              <button pButton type="button" label="View Rules" class="outline-button "></button>
-              <button pButton type="button" label="Delete" class="outline-button "></button>
+              <button
+                pButton
+                type="button"
+                label="Edit"
+                class="outline-button"
+                style="background: #fff; border-color: #e5e7eb; color: #111827"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="View Rules"
+                class="outline-button"
+                style="background: #fff; border-color: #e5e7eb; color: #111827"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Delete"
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="deleteCategory()"
+              ></button>
             </div>
           </div>
 
@@ -198,8 +217,8 @@
 
         <div class="modal-footer">
           <button type="button" class="text-button" (click)="closeAddModal()">Cancel</button>
-          <button type="button" class="secondary-button" (click)="closeAddModal()">Save as Draft</button>
-          <button type="button" class="primary-button submit-btn" (click)="closeAddModal()">Submit for Approval</button>
+          <button type="button" class="secondary-button" (click)="saveDraft()">Save as Draft</button>
+          <button type="button" class="primary-button submit-btn" (click)="submitCategory()">Submit for Approval</button>
         </div>
       </div>
     </div>

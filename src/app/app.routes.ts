@@ -13,6 +13,7 @@ import { EfrmCategorySetupComponent } from './features/efrm/pages/efrm-category-
 import { EfrmApprovalsComponent } from './features/efrm/pages/efrm-approvals/efrm-approvals';
 import { EfrmAlertMonitoringComponent } from './features/efrm/pages/efrm-alert-monitoring/efrm-alert-monitoring';
 import { EfrmAlertDetailsComponent } from './features/efrm/pages/efrm-alert-details/efrm-alert-details';
+import { EfrmSystemComponent } from './features/efrm/pages/efrm-system/efrm-system';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ export const routes: Routes = [
       { path: 'efrm/categories', component: EfrmCategorySetupComponent },
       { path: 'efrm/approvals', component: EfrmApprovalsComponent },
       { path: 'efrm/rule-config/:ruleId', component: EfrmRuleConfigComponent },
+      { path: 'efrm/system', component: EfrmSystemComponent },
       { path: 'efrm/alert', component: EfrmAlertMonitoringComponent },
       { path: 'efrm/alert/:alertId', component: EfrmAlertDetailsComponent },
       { path: 'efrm/ai-assistant', component: EfrmAiAssistantComponent },

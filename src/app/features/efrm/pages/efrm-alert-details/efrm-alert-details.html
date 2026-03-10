@@ -50,7 +50,7 @@
   </div>
 
   <!-- Customer Information -->
-  <div class="card">
+  <div class="card" *ngIf="hasSection('customer')">
     <h2 class="card-title"><i class="pi pi-user card-icon blue"></i> Customer Information</h2>
     <div class="info-grid-4">
       <div class="info-field">
@@ -87,7 +87,7 @@
   </div>
 
   <!-- Transaction Details -->
-  <div class="card">
+  <div class="card" *ngIf="hasSection('transaction')">
     <h2 class="card-title"><i class="pi pi-list card-icon indigo"></i> Transaction Details</h2>
     <table class="txn-table">
       <thead>

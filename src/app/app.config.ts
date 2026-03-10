@@ -8,6 +8,7 @@ import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { definePreset } from '@primeuix/themes';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { routes } from './app.routes';
 
@@ -34,6 +35,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    MessageService,
+    ConfirmationService,
     providePrimeNG({
       ripple: true,
       theme: {

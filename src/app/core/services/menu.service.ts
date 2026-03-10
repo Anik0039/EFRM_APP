@@ -9,6 +9,17 @@ export class MenuService {
         sectionLabel: 'MENU',
         items: [
           {
+            label: 'Dashboard',
+            icon: 'pi pi-objects-column',
+            route: '/dashboard/efrm',
+            exactMatch: true,
+          },
+          {
+            label: 'User',
+            icon: 'pi pi-users',
+            route: '/dashboard/user-management',
+          },
+          {
             label: 'Categories',
             icon: 'pi pi-th-large',
             route: '/dashboard/efrm/categories',

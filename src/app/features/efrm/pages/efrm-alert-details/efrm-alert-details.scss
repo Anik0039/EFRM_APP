@@ -292,36 +292,39 @@
 }
 
 .btn-save {
-  background: #1b498a;
-  border-color: #1b498a;
+  background: #1b498a !important;
+  border-color: #1b498a !important;
+  color: #fff !important;
   flex: 1;
 }
 
 .btn-save:hover {
-  background: #153a6e;
-  border-color: #153a6e;
+  background: #153a6e !important;
+  border-color: #153a6e !important;
 }
 
 .btn-close-alert {
-  background: #16a34a;
-  border-color: #16a34a;
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+  color: #fff !important;
   flex: 1;
 }
 
 .btn-close-alert:hover {
-  background: #15803d;
-  border-color: #15803d;
+  background: #15803d !important;
+  border-color: #15803d !important;
 }
 
 .btn-escalate {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #fff !important;
   flex: 1;
 }
 
 .btn-escalate:hover {
-  background: #b91c1c;
-  border-color: #b91c1c;
+  background: #b91c1c !important;
+  border-color: #b91c1c !important;
 }
 
 // Responsive

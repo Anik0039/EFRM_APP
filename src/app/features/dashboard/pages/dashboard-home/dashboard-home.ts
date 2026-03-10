@@ -55,7 +55,7 @@ export class DashboardHomeComponent {
       iconColor: '#1b498a',
       iconBg: '#eef3fa',
       accentColor: '#1b498a',
-      route: '/dashboard/user-management',
+      route: '/dashboard',
       tags: ['RBAC', 'Audit Trail', 'AD / LDAP'],
     },
     {

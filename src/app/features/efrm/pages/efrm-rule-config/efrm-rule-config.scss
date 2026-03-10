@@ -79,7 +79,7 @@ $orange: #d97706;
   align-items: center;
   gap: 0.4rem;
   padding: 0.45rem 0.85rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid $border;
   background: $white;
   font-size: 0.82rem;
@@ -89,9 +89,9 @@ $orange: #d97706;
   transition: all 0.15s;
 
   &:hover {
-    background: $primary-light;
-    border-color: $primary;
-    color: $primary;
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: $text;
   }
 }
 
@@ -100,7 +100,7 @@ $orange: #d97706;
   align-items: center;
   gap: 0.4rem;
   padding: 0.45rem 1.1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   background: $primary;
   color: $white;
@@ -260,7 +260,7 @@ $orange: #d97706;
   align-items: center;
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   background: $primary;
   color: $white;
@@ -276,7 +276,7 @@ $orange: #d97706;
 .btn-delete {
   width: 36px;
   height: 36px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   background: #fee2e2;
   color: $red;
@@ -285,9 +285,11 @@ $orange: #d97706;
   justify-content: center;
   cursor: pointer;
   margin-bottom: 2px;
+  transition: all 0.15s;
 
   &:hover {
     background: #fecaca;
+    color: #991b1b;
   }
 }
 

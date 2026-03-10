@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
 
 type RuleCategory = 'General Banking' | 'Credit' | 'Trade Based' | 'Remittance';
 type RuleType = 'Built-in' | 'Dynamic';
@@ -27,6 +28,7 @@ interface Rule {
 })
 export class EfrmRulesComponent {
   private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
   private readonly goRulesUrl =
     'https://efrm-rule-engine.vercel.app/gorules';
 
@@ -216,6 +218,11 @@ export class EfrmRulesComponent {
 
   toggleStatus(rule: Rule) {
     rule.active = !rule.active;
+    this.messageService.add({
+      severity: rule.active ? 'success' : 'info',
+      summary: rule.active ? 'Rule Activated' : 'Rule Deactivated',
+      detail: `Rule ${rule.id} has been ${rule.active ? 'activated' : 'deactivated'}.`,
+    });
   }
 
   openRule(rule: Rule) {

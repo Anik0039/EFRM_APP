@@ -4,11 +4,13 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AppHeaderComponent } from '../components/app-header/app-header';
 import { AppSidebarComponent } from '../components/app-sidebar/app-sidebar';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-dashboard-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, AppHeaderComponent, AppSidebarComponent],
+  imports: [CommonModule, RouterOutlet, AppHeaderComponent, AppSidebarComponent, ToastModule, ConfirmDialogModule],
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.scss',
 })

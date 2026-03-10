@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 interface RuleParam {
   label: string;
@@ -71,6 +72,8 @@ interface RuleConfig {
 export class EfrmRuleConfigComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   ruleId = '';
   config!: RuleConfig;
@@ -597,6 +600,19 @@ export class EfrmRuleConfigComponent implements OnInit {
   }
 
   submitRule() {
-    console.log('Submitting rule:', this.config);
+    this.confirmationService.confirm({
+      message: `Are you sure you want to submit rule "${this.config.ruleName}" (${this.config.ruleId}) for approval?`,
+      header: 'Confirm Submission',
+      icon: 'pi pi-send',
+      accept: () => {
+        this.config.workflow.makerStatus = 'completed';
+        this.config.workflow.checkerStatus = 'pending';
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Rule Submitted',
+          detail: `Rule ${this.config.ruleId} has been submitted for checker approval.`,
+        });
+      },
+    });
   }
 }

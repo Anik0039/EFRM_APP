@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 type ApprovalTab = 'Rule' | 'Category';
 type ApprovalStatus = 'Pending' | 'Approved' | 'Rejected';
@@ -39,6 +40,9 @@ interface CategoryApproval {
   styleUrl: './efrm-approvals.scss',
 })
 export class EfrmApprovalsComponent {
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
+
   approvalTab: ApprovalTab = 'Rule';
   statusFilter: ApprovalStatus | 'All' = 'Pending';
   searchTerm = '';
@@ -216,21 +220,41 @@ export class EfrmApprovalsComponent {
   }
 
   approve(): void {
+    const itemName = this.selectedRule?.name || this.selectedCategory?.name || '';
     if (this.selectedRule) {
       this.selectedRule.status = 'Approved';
     } else if (this.selectedCategory) {
       this.selectedCategory.status = 'Approved';
     }
     this.closeDetails();
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Approved',
+      detail: `"${itemName}" has been approved successfully.`,
+    });
   }
 
   reject(): void {
-    if (this.selectedRule) {
-      this.selectedRule.status = 'Rejected';
-    } else if (this.selectedCategory) {
-      this.selectedCategory.status = 'Rejected';
-    }
-    this.closeDetails();
+    const itemName = this.selectedRule?.name || this.selectedCategory?.name || '';
+    this.confirmationService.confirm({
+      message: `Are you sure you want to reject "${itemName}"? This action cannot be undone.`,
+      header: 'Confirm Rejection',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        if (this.selectedRule) {
+          this.selectedRule.status = 'Rejected';
+        } else if (this.selectedCategory) {
+          this.selectedCategory.status = 'Rejected';
+        }
+        this.closeDetails();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Rejected',
+          detail: `"${itemName}" has been rejected.`,
+        });
+      },
+    });
   }
 }
 

@@ -1,8 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
 
 interface User {
   userId: string;
@@ -24,6 +25,7 @@ type FilterType = 'all' | 'active' | 'inactive';
   styleUrl: './user-management-home.scss',
 })
 export class UserManagementHomeComponent {
+  private readonly messageService = inject(MessageService);
   readonly searchQuery = signal('');
   readonly activeFilter = signal<FilterType>('all');
 
@@ -100,9 +102,15 @@ export class UserManagementHomeComponent {
   }
 
   toggleStatus(user: User): void {
+    const newActive = !user.active;
     this.users.update((users) =>
-      users.map((u) => (u.userId === user.userId ? { ...u, active: !u.active } : u)),
+      users.map((u) => (u.userId === user.userId ? { ...u, active: newActive } : u)),
     );
+    this.messageService.add({
+      severity: newActive ? 'success' : 'info',
+      summary: newActive ? 'User Activated' : 'User Deactivated',
+      detail: `${user.name} has been ${newActive ? 'activated' : 'deactivated'}.`,
+    });
   }
 
   editUser(user: User): void {
@@ -132,5 +140,10 @@ export class UserManagementHomeComponent {
     a.download = 'users.csv';
     a.click();
     URL.revokeObjectURL(url);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Exported',
+      detail: `${rows.length} users exported to CSV successfully.`,
+    });
   }
 }

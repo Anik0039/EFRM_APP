@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { MessageService, ConfirmationService } from 'primeng/api';
+
+type AlertSection = 'customer' | 'transaction';
 
 interface Transaction {
   date: string;
@@ -29,6 +32,7 @@ interface AlertDetail {
   accountType: string;
   customerRiskLevel: string;
   riskClass: string;
+  sections: AlertSection[];
   transactions: Transaction[];
   ruleLogic: string;
   systemObservation: string;
@@ -45,6 +49,8 @@ interface AlertDetail {
 export class EfrmAlertDetailsComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
 
   alertId = '';
   analystComments = '';
@@ -68,6 +74,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
     accountType: '',
     customerRiskLevel: '',
     riskClass: '',
+    sections: [],
     transactions: [],
     ruleLogic: '',
     systemObservation: '',
@@ -92,6 +99,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Savings',
       customerRiskLevel: 'Medium',
       riskClass: 'medium',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '02-Mar-2026', type: 'Cash Deposit', amount: '৳ 950,000', channel: 'Branch', location: 'Motijheel' },
         { date: '10-Mar-2026', type: 'Cash Deposit', amount: '৳ 970,000', channel: 'Branch', location: 'Motijheel' },
@@ -118,6 +126,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Current',
       customerRiskLevel: 'Low',
       riskClass: 'low',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '15-Mar-2026', type: 'Cash Deposit', amount: '৳ 920,000', channel: 'Branch', location: 'Gulshan' },
         { date: '22-Mar-2026', type: 'Cash Deposit', amount: '৳ 940,000', channel: 'Branch', location: 'Gulshan' },
@@ -144,6 +153,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Savings',
       customerRiskLevel: 'High',
       riskClass: 'high',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '15-Mar-2026', type: 'Wire Transfer', amount: '৳ 4,500,000', channel: 'Online', location: 'Dhanmondi' },
       ],
@@ -168,6 +178,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Current',
       customerRiskLevel: 'Low',
       riskClass: 'low',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '21-Mar-2026', type: 'Check Deposit', amount: '৳ 3,200,000', channel: 'Branch', location: 'Uttara' },
       ],
@@ -192,6 +203,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Loan',
       customerRiskLevel: 'High',
       riskClass: 'high',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '05-Apr-2026', type: 'Fund Transfer', amount: '৳ 2,800,000', channel: 'Online', location: 'Banani' },
         { date: '10-Apr-2026', type: 'Fund Transfer', amount: '৳ 1,500,000', channel: 'Branch', location: 'Banani' },
@@ -217,6 +229,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Loan',
       customerRiskLevel: 'Low',
       riskClass: 'low',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '12-Apr-2026', type: 'Fund Transfer', amount: '৳ 1,800,000', channel: 'Branch', location: 'Mirpur' },
       ],
@@ -241,6 +254,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Current',
       customerRiskLevel: 'High',
       riskClass: 'high',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '15-Apr-2026', type: 'LC Payment', amount: '৳ 12,500,000', channel: 'Trade Desk', location: 'Chittagong' },
       ],
@@ -265,6 +279,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Current',
       customerRiskLevel: 'Low',
       riskClass: 'low',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '20-Apr-2026', type: 'LC Payment', amount: '৳ 8,700,000', channel: 'Trade Desk', location: 'Narayanganj' },
       ],
@@ -289,6 +304,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Savings',
       customerRiskLevel: 'High',
       riskClass: 'high',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '23-Apr-2026', type: 'Inward Remittance', amount: '৳ 350,000', channel: 'Remittance', location: 'Sylhet' },
         { date: '25-Apr-2026', type: 'Inward Remittance', amount: '৳ 420,000', channel: 'Remittance', location: 'Sylhet' },
@@ -314,6 +330,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
       accountType: 'Savings',
       customerRiskLevel: 'Low',
       riskClass: 'low',
+      sections: ['customer', 'transaction'],
       transactions: [
         { date: '27-Apr-2026', type: 'Inward Remittance', amount: '৳ 180,000', channel: 'Remittance', location: 'Comilla' },
       ],
@@ -322,6 +339,10 @@ export class EfrmAlertDetailsComponent implements OnInit {
       observationHighlight: 'Monthly remittance of ৳ 180,000',
     },
   };
+
+  hasSection(section: AlertSection): boolean {
+    return this.alert.sections.includes(section);
+  }
 
   ngOnInit(): void {
     this.alertId = this.route.snapshot.paramMap.get('alertId') || '';
@@ -333,8 +354,57 @@ export class EfrmAlertDetailsComponent implements OnInit {
     this.router.navigate(['/dashboard/efrm/alert']);
   }
 
-  saveInvestigation() {}
-  closeAlert() {}
-  escalateCase() {}
-  downloadReport() {}
+  saveInvestigation() {
+    this.alert.alertStatus = this.investigationStatus;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Saved',
+      detail: `Investigation for ${this.alert.alertId} saved successfully.`,
+    });
+  }
+
+  closeAlert() {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to close alert "${this.alert.alertId}"? This will mark the investigation as complete.`,
+      header: 'Confirm Close Alert',
+      icon: 'pi pi-check-circle',
+      accept: () => {
+        this.alert.alertStatus = 'Closed';
+        this.alert.statusClass = 'closed';
+        this.investigationStatus = 'Closed';
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Alert Closed',
+          detail: `Alert ${this.alert.alertId} has been closed.`,
+        });
+      },
+    });
+  }
+
+  escalateCase() {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to escalate alert "${this.alert.alertId}"? This will notify senior management.`,
+      header: 'Confirm Escalation',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.alert.alertStatus = 'Escalated';
+        this.alert.statusClass = 'escalated';
+        this.investigationStatus = 'Escalated';
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Escalated',
+          detail: `Alert ${this.alert.alertId} has been escalated to senior management.`,
+        });
+      },
+    });
+  }
+
+  downloadReport() {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Download Started',
+      detail: `Report for ${this.alert.alertId} is being generated.`,
+    });
+  }
 }

@@ -1,0 +1,216 @@
+<div class="system-page">
+  <!-- Header -->
+  <div class="system-header">
+    <div class="system-header-left">
+      <h1>System Management</h1>
+    </div>
+    <div class="system-header-actions">
+      <button pButton type="button" label="Refresh Status" icon="pi pi-sync" class="p-button-outlined" (click)="refreshStatus()"></button>
+      <button pButton type="button" label="Export Logs" icon="pi pi-download" class="p-button-outlined" (click)="exportLogs()"></button>
+      <button pButton type="button" label="Settings" icon="pi pi-cog" class="primary-button"></button>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-top">
+        <div class="summary-icon blue-bg">
+          <i class="pi pi-users"></i>
+        </div>
+        <div class="summary-info">
+          <span class="summary-label">Active Users</span>
+          <span class="summary-value">{{ stats.activeUsers }}</span>
+          <span class="summary-sub blue">Users Online</span>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div class="summary-icon green-bg">
+          <i class="pi pi-server"></i>
+        </div>
+        <div class="summary-info">
+          <span class="summary-label">Connected Systems</span>
+          <span class="summary-value">{{ stats.connectedSystems }}</span>
+          <span class="summary-sub green">Integrated Systems</span>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div class="summary-icon orange-bg">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="summary-info">
+          <span class="summary-label">Alerts Processed</span>
+          <span class="summary-value">{{ stats.alertsProcessed }}</span>
+          <span class="summary-sub orange">Today</span>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div class="summary-icon teal-bg">
+          <i class="pi pi-check-circle"></i>
+        </div>
+        <div class="summary-info">
+          <span class="summary-label">System Health</span>
+          <span class="summary-value">{{ stats.systemHealth }}%</span>
+          <span class="summary-sub green">Operational</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Integration & Source Connectivity -->
+  <div class="card">
+    <h2 class="card-title">Data Integration & Source Connectivity</h2>
+    <table class="source-table">
+      <thead>
+        <tr>
+          <th>System Name</th>
+          <th>Type</th>
+          <th>Integration</th>
+          <th>Status</th>
+          <th>Last Sync</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (src of sources; track src.name) {
+          <tr>
+            <td class="src-name">{{ src.name }}</td>
+            <td>{{ src.type }}</td>
+            <td>{{ src.integration }}</td>
+            <td>
+              <span
+                class="conn-tag"
+                [ngClass]="{
+                  connected: src.status === 'Connected',
+                  syncing: src.status === 'Syncing',
+                  disconnected: src.status === 'Disconnected'
+                }"
+              >
+                {{ src.status }}
+              </span>
+            </td>
+            <td class="sync-time">{{ src.lastSync }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Active Users & Activity Logs - Side by Side -->
+  <div class="split-row">
+    <!-- Active Users -->
+    <div class="card split-card">
+      <div class="card-header-row">
+        <h2 class="card-title">Active Users</h2>
+        <div class="card-filters">
+          <input type="text" placeholder="Search users..." [(ngModel)]="userSearch" class="mini-search" />
+          <select [(ngModel)]="userRoleFilter" class="mini-select">
+            @for (role of userRoles; track role) {
+              <option [value]="role">{{ role }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Login</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filteredUsers; track user.empId) {
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">{{ user.avatar }}</div>
+                  <div class="user-info">
+                    <span class="user-name">{{ user.name }}</span>
+                    <span class="user-emp">{{ user.empId }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.login }}</td>
+              <td>
+                <span
+                  class="user-status-tag"
+                  [ngClass]="{
+                    active: user.status === 'Active',
+                    idle: user.status === 'Idle',
+                    offline: user.status === 'Offline'
+                  }"
+                >
+                  {{ user.status }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Activity Logs -->
+    <div class="card split-card">
+      <div class="card-header-row">
+        <h2 class="card-title">Activity Logs</h2>
+        <div class="card-filters">
+          <select [(ngModel)]="logModuleFilter" class="mini-select">
+            @for (mod of logModules; track mod) {
+              <option [value]="mod">{{ mod }}</option>
+            }
+          </select>
+          <input type="date" [(ngModel)]="logDateFilter" class="mini-date" />
+        </div>
+      </div>
+      <div class="log-list">
+        @for (log of filteredLogs; track log.title) {
+          <div class="log-item">
+            <div class="log-icon" [ngClass]="log.iconClass">
+              <i [class]="log.icon"></i>
+            </div>
+            <div class="log-content">
+              <span class="log-title">{{ log.title }}</span>
+              <span class="log-desc">{{ log.description }}</span>
+            </div>
+            <span
+              class="log-result"
+              [ngClass]="{
+                success: log.result === 'Success',
+                failed: log.result === 'Failed',
+                warning: log.result === 'Warning'
+              }"
+            >
+              {{ log.result }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- System Health Indicators -->
+  <div class="card">
+    <h2 class="card-title">System Health Indicators</h2>
+    <div class="health-row">
+      @for (h of healthIndicators; track h.label) {
+        <div class="health-item">
+          <div class="health-header">
+            <span class="health-label">{{ h.label }}</span>
+            <span class="health-value">{{ h.value }}</span>
+          </div>
+          <div class="health-bar-bg">
+            <div class="health-bar-fill" [style.width.%]="h.percent" [style.background]="h.color"></div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

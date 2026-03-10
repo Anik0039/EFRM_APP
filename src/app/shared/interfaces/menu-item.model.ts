@@ -12,6 +12,7 @@ export interface NavTopItem {
   label: string;
   icon: string;
   route?: string;
+  exactMatch?: boolean;
   subGroups?: NavSubGroup[];
 }
 

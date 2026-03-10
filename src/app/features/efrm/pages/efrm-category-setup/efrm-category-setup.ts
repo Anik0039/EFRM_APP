@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 type RiskDomain = 'Operational' | 'Credit' | 'ML-TF' | 'Trade' | 'Remittance';
 
@@ -28,6 +29,9 @@ interface Category {
   styleUrl: './efrm-category-setup.scss',
 })
 export class EfrmCategorySetupComponent {
+  private readonly messageService = inject(MessageService);
+  private readonly confirmationService = inject(ConfirmationService);
+
   categories: Category[] = [
     {
       id: 'general-banking',
@@ -139,6 +143,44 @@ export class EfrmCategorySetupComponent {
 
   closeAddModal(): void {
     this.showAddModal = false;
+  }
+
+  submitCategory(): void {
+    this.showAddModal = false;
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Submitted',
+      detail: `Category "${this.newCategoryName}" submitted for approval.`,
+    });
+  }
+
+  saveDraft(): void {
+    this.showAddModal = false;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Draft Saved',
+      detail: `Category "${this.newCategoryName}" saved as draft.`,
+    });
+  }
+
+  deleteCategory(): void {
+    const cat = this.selectedCategory;
+    if (!cat) return;
+    this.confirmationService.confirm({
+      message: `Are you sure you want to delete category "${cat.name}"? This action cannot be undone.`,
+      header: 'Confirm Delete',
+      icon: 'pi pi-trash',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.categories = this.categories.filter(c => c.id !== cat.id);
+        this.selectedCategoryId = null;
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Deleted',
+          detail: `Category "${cat.name}" has been deleted.`,
+        });
+      },
+    });
   }
 }
 

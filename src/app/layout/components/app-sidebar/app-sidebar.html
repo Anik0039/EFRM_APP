@@ -1,8 +1,8 @@
 <aside class="sidebar" [class.collapsed]="collapsed" [class.mobile-open]="mobileOpen">
   <!-- Brand -->
-  <div class="sidebar-brand">
+  <a class="sidebar-brand" routerLink="/dashboard">
     <img src="/Logo.png" alt="ERA Logo" class="brand-logo" />
-  </div>
+  </a>
 
   <!-- Navigation -->
   <nav class="sidebar-nav">
@@ -15,7 +15,7 @@
             class="nav-item"
             [routerLink]="item.route"
             routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: false }"
+            [routerLinkActiveOptions]="{ exact: item.exactMatch ?? false }"
           >
             <i [class]="item.icon + ' nav-icon'"></i>
             <span class="nav-label">{{ item.label }}</span>
