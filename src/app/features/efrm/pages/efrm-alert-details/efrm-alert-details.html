@@ -1,0 +1,162 @@
+<div class="details-page">
+  <!-- Header -->
+  <div class="details-header">
+    <div class="details-header-left">
+      <div>
+        <h1>Alert Investigation Details</h1>
+      </div>
+    </div>
+    <div class="details-header-actions">
+      <button pButton type="button" label="Back" icon="pi pi-arrow-left" class="p-button-outlined" (click)="goBack()"></button>
+      <button pButton type="button" label="Download Report" icon="pi pi-download" class="primary-button" (click)="downloadReport()"></button>
+    </div>
+  </div>
+
+  <!-- Alert Summary -->
+  <div class="card">
+    <h2 class="card-title"><i class="pi pi-exclamation-triangle card-icon red"></i> Alert Summary</h2>
+    <div class="info-grid-4">
+      <div class="info-field">
+        <span class="info-label">Alert ID</span>
+        <span class="info-value">{{ alert.alertId }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Rule ID</span>
+        <span class="info-value">{{ alert.ruleId }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Rule Name</span>
+        <span class="info-value">{{ alert.ruleName }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Category</span>
+        <span class="info-value">{{ alert.category }}</span>
+      </div>
+    </div>
+    <div class="info-grid-4">
+      <div class="info-field">
+        <span class="info-label">Alert Status</span>
+        <span class="status-tag" [ngClass]="alert.statusClass">{{ alert.alertStatus }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Variance</span>
+        <span class="info-value variance">{{ alert.variance }}%</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Alert Date</span>
+        <span class="info-value">{{ alert.alertDate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Information -->
+  <div class="card">
+    <h2 class="card-title"><i class="pi pi-user card-icon blue"></i> Customer Information</h2>
+    <div class="info-grid-4">
+      <div class="info-field">
+        <span class="info-label">Customer ID</span>
+        <span class="info-value">{{ alert.customerId }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Customer Name</span>
+        <span class="info-value">{{ alert.customerName }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Nominee Name</span>
+        <span class="info-value">{{ alert.nomineeName }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Account Number</span>
+        <span class="info-value">{{ alert.accountNumber }}</span>
+      </div>
+    </div>
+    <div class="info-grid-4">
+      <div class="info-field">
+        <span class="info-label">Branch Name</span>
+        <span class="info-value">{{ alert.branchName }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Account Type</span>
+        <span class="info-value">{{ alert.accountType }}</span>
+      </div>
+      <div class="info-field">
+        <span class="info-label">Customer Risk Level</span>
+        <span class="risk-tag" [ngClass]="alert.riskClass">{{ alert.customerRiskLevel }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transaction Details -->
+  <div class="card">
+    <h2 class="card-title"><i class="pi pi-list card-icon indigo"></i> Transaction Details</h2>
+    <table class="txn-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Transaction Type</th>
+          <th>Amount</th>
+          <th>Channel</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (txn of alert.transactions; track txn.date) {
+          <tr>
+            <td>{{ txn.date }}</td>
+            <td>{{ txn.type }}</td>
+            <td>{{ txn.amount }}</td>
+            <td>{{ txn.channel }}</td>
+            <td>{{ txn.location }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Rule Logic Explanation -->
+  <div class="card">
+    <h2 class="card-title"><i class="pi pi-cog card-icon orange"></i> Rule Logic Explanation</h2>
+    <div class="logic-box rule-logic">
+      <span class="logic-label">RULE LOGIC</span>
+      <p>{{ alert.ruleLogic }}</p>
+    </div>
+    <div class="logic-box system-observation">
+      <span class="logic-label">SYSTEM OBSERVATION</span>
+      <p><strong>{{ alert.observationHighlight }}</strong>{{ alert.systemObservation }}</p>
+    </div>
+  </div>
+
+  <!-- Investigation Panel -->
+  <div class="card">
+    <h2 class="card-title"><i class="pi pi-check-square card-icon green"></i> Investigation Panel</h2>
+
+    <div class="inv-field">
+      <label>Analyst Comments</label>
+      <textarea rows="4" placeholder="Enter your investigation notes and observations..." [(ngModel)]="analystComments"></textarea>
+    </div>
+
+    <div class="inv-field">
+      <label>Evidence Upload</label>
+      <div class="upload-area">
+        <i class="pi pi-cloud-upload upload-icon"></i>
+        <p>Click to upload or drag and drop</p>
+        <span>PDF, DOC, JPG, PNG up to 10MB</span>
+      </div>
+    </div>
+
+    <div class="inv-field">
+      <label>Investigation Status</label>
+      <select [(ngModel)]="investigationStatus">
+        @for (s of statusOptions; track s) {
+          <option [value]="s">{{ s }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="inv-actions">
+      <button pButton type="button" label="Save Investigation" icon="pi pi-save" class="btn-save" (click)="saveInvestigation()"></button>
+      <button pButton type="button" label="Close Alert" icon="pi pi-check-circle" class="btn-close-alert" (click)="closeAlert()"></button>
+      <button pButton type="button" label="Escalate Case" icon="pi pi-exclamation-triangle" class="btn-escalate" (click)="escalateCase()"></button>
+    </div>
+  </div>
+</div>

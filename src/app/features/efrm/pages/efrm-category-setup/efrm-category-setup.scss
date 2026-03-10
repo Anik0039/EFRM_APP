@@ -1,3 +1,20 @@
+.submit-btn {
+  background: #1b498a !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+}
+/* Submit for Approval button custom style */
+.submit-btn {
+  background: #1b498a !important;
+  border-color: #1b498a !important;
+  color: #fff !important;
+}
+/* Add Category button custom style */
+.add-category-btn {
+  background: #1b498a !important;
+  border-color: #1b498a !important;
+  color: #ffffff !important;
+}
 .category-page {
   padding: 1.5rem;
   display: flex;
@@ -60,8 +77,9 @@
 }
 
 .primary-button {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #1b498a;
+  border-color: #1b498a;
+  border-radius: 8px;
 }
 
 .primary-button:hover {
@@ -383,7 +401,7 @@
 }
 
 .secondary-button {
-  border-radius: 999px;
+  border-radius: 8px !important;
   border: 1px solid #e5e7eb;
   background: #f9fafb;
   padding: 0.4rem 0.9rem;
@@ -415,4 +433,3 @@
     flex-direction: column;
   }
 }
-
