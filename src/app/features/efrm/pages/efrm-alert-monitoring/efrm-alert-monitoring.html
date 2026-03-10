@@ -1,0 +1,173 @@
+<div class="alert-page">
+  <!-- Header -->
+  <div class="alert-header">
+    <div class="alert-title">
+      <h1>Suspicious Transaction Alerts</h1>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <div class="summary-label">Total Alerts Today</div>
+          <div class="summary-value">{{ stats.totalAlerts }}</div>
+        </div>
+        <div class="summary-icon warning">
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <div class="summary-label">High Risk Alerts</div>
+          <div class="summary-value red">{{ stats.highRisk }}</div>
+        </div>
+        <div class="summary-icon danger">
+          <i class="pi pi-ban"></i>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <div class="summary-label">Medium Risk Alerts</div>
+          <div class="summary-value orange">{{ stats.mediumRisk }}</div>
+        </div>
+        <div class="summary-icon warn-orange">
+          <i class="pi pi-info-circle"></i>
+        </div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <div class="summary-label">Investigating</div>
+          <div class="summary-value blue">{{ stats.investigating }}</div>
+        </div>
+        <div class="summary-icon info">
+          <i class="pi pi-search"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filter-section">
+    <div class="filters-row">
+      <div class="filter">
+        <label>Rule ID</label>
+        <select [(ngModel)]="selectedRuleId">
+          <option value="All Rules">All Rules</option>
+          @for (id of ruleIds; track id) {
+            <option [value]="id">{{ id }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter">
+        <label>Category</label>
+        <select [(ngModel)]="selectedCategory">
+          <option value="All Categories">All Categories</option>
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter">
+        <label>Status</label>
+        <select [(ngModel)]="selectedStatus">
+          <option value="All Status">All Status</option>
+          @for (s of statuses; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter">
+        <label>Date From</label>
+        <input type="date" [(ngModel)]="dateFrom" />
+      </div>
+      <div class="filter">
+        <label>Date To</label>
+        <input type="date" [(ngModel)]="dateTo" />
+      </div>
+      <div class="filter">
+        <label>Search</label>
+        <input type="text" placeholder="Customer ID, Account..." [(ngModel)]="searchTerm" />
+      </div>
+    </div>
+    <div class="filter-actions">
+      <!-- <button
+        pButton
+        type="button"
+        label="Apply Filters"
+        icon="pi pi-filter"
+        class="primary-button"
+        (click)="applyFilters()"
+      ></button> -->
+      <!-- <button
+        pButton
+        type="button"
+        label="Clear All"
+        class="p-button-outlined"
+        (click)="clearFilters()"
+      ></button> -->
+    </div>
+  </div>
+
+  <!-- Alert Records Table -->
+  <div class="table-wrapper">
+    <h2 class="table-title">Alert Records</h2>
+    <table class="alert-table">
+      <thead>
+        <tr>
+          <th>Alert ID</th>
+          <th>Rule</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Variance</th>
+          <th>Date</th>
+          <th>Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (alert of paginatedAlerts; track alert.alertId) {
+          <tr class="clickable-row" (click)="openAlert(alert)">
+            <td class="alert-id-link">{{ alert.alertId }}</td>
+            <td>{{ alert.ruleId }}</td>
+            <td>
+              <span class="category-tag" [ngClass]="alert.categoryClass">
+                {{ alert.category }}
+              </span>
+            </td>
+            <td>
+              <span class="status-tag" [ngClass]="alert.statusClass">
+                {{ alert.status }}
+              </span>
+            </td>
+            <td>{{ alert.variance }}%</td>
+            <td>{{ alert.date }}</td>
+            <td class="reason-cell">{{ alert.reason }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" class="empty-state">No alerts found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="table-footer">
+      <div>Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ currentPage * pageSize > filteredAlerts.length ? filteredAlerts.length : currentPage * pageSize }} of {{ filteredAlerts.length }} results</div>
+      <div class="pagination">
+        <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+        @for (p of pageNumbers; track p) {
+          <button class="page-btn" [class.active]="p === currentPage" (click)="goToPage(p)">{{ p }}</button>
+        }
+        <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
+      </div>
+    </div>
+  </div>
+</div>

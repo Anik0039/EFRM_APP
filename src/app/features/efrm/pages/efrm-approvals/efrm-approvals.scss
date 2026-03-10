@@ -59,6 +59,11 @@
 
 .header-tab-switch .tab-switch {
   background: #f3f4ff;
+  border-radius: 8px !important;
+}
+
+.header-tab-switch .tab-button {
+  border-radius: 8px !important;
 }
 
 .tab-button {
@@ -302,13 +307,13 @@
 }
 
 .approve-button {
-  background: #16a34a;
-  border-color: #16a34a;
+  background: #1b498a;
+  border-color: #1b498a;
 }
 
 .approve-button:hover {
-  background: #15803d;
-  border-color: #15803d;
+  background: #153a6e;
+  border-color: #153a6e;
 }
 
 .reject-button {

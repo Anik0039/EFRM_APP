@@ -16,7 +16,7 @@ export class MenuService {
           {
             label: 'Rules',
             icon: 'pi pi-list',
-            route: '/dashboard/efrm',
+            route: '/dashboard/efrm/rules',
           },
           {
             label: 'Alert',

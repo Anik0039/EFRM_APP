@@ -481,7 +481,7 @@ export class EfrmRuleConfigComponent implements OnInit {
   riskOptions = ['High', 'Medium', 'Low'];
   priorityOptions = ['High Priority', 'Medium Priority', 'Low Priority'];
   frequencyOptions = ['Immediate', 'Hourly', 'Daily', 'Weekly'];
-  executionOptions = ['Real-time', 'Batch', 'Scheduled'];
+  executionOptions = ['Real-time', 'Batch'];
   dataSourceOptions = [
     'Core Banking System',
     'Trade Finance System',

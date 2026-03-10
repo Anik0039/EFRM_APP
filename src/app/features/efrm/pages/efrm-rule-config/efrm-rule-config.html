@@ -55,11 +55,21 @@
         </div>
         <div class="rc-field">
           <label>Scenario Description</label>
-          <textarea rows="3" [(ngModel)]="config.scenarioDescription"></textarea>
+          <textarea
+            rows="3"
+            class="readonly"
+            [(ngModel)]="config.scenarioDescription"
+            readonly
+          ></textarea>
         </div>
         <div class="rc-field">
           <label>Scenario Logic</label>
-          <textarea rows="3" class="code-textarea" [(ngModel)]="config.scenarioLogic"></textarea>
+          <textarea
+            rows="3"
+            class="code-textarea readonly"
+            [(ngModel)]="config.scenarioLogic"
+            readonly
+          ></textarea>
         </div>
       </div>
 
@@ -112,18 +122,6 @@
                 <span>Inactive</span>
               </label>
             </div>
-          </div>
-          <div class="rc-field">
-            <label>Integration Type</label>
-            <input type="text" [(ngModel)]="config.integrationType" />
-          </div>
-          <div class="rc-field">
-            <label>Integration Engine</label>
-            <select [(ngModel)]="config.integrationEngine">
-              @for (eng of integrationEngineOptions; track eng) {
-                <option [value]="eng">{{ eng }}</option>
-              }
-            </select>
           </div>
         </div>
       </div>
@@ -187,14 +185,6 @@
           <div class="rc-field">
             <label>Schedule Time</label>
             <input type="text" [(ngModel)]="config.scheduleTime" />
-          </div>
-          <div class="rc-field">
-            <label>Data Source</label>
-            <select [(ngModel)]="config.dataSource">
-              @for (ds of dataSourceOptions; track ds) {
-                <option [value]="ds">{{ ds }}</option>
-              }
-            </select>
           </div>
         </div>
       </div>

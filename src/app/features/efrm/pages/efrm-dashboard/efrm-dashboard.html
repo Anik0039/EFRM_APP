@@ -1,0 +1,108 @@
+<div class="efrm-dashboard-page">
+  <div class="dashboard-header">
+    <div class="dashboard-title">
+      <div class="dashboard-icon">
+        <i class="pi pi-shield"></i>
+      </div>
+      <div>
+        <h1>EFRM Overview</h1>
+        <p>Single view of rules, alerts, approvals and suspicious categories</p>
+      </div>
+    </div>
+    <div class="dashboard-header-actions">
+      <button
+        pButton
+        type="button"
+        label="View Alerts"
+        icon="pi pi-bell"
+        class="primary-button"
+        (click)="gotoAlerts()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="View Rules"
+        icon="pi pi-sliders-h"
+        class="outline-button"
+        (click)="gotoRules()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="overview-row">
+    @for (card of overviewCards; track card.label) {
+      <div class="overview-card">
+        <div class="overview-label">{{ card.label }}</div>
+        <div class="overview-value {{ card.accentClass }}">{{ card.value }}</div>
+        <div class="overview-subtitle">{{ card.subtitle }}</div>
+      </div>
+    }
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="panel monitoring-panel">
+      <div class="panel-header">
+        <h2>Monitoring Snapshot</h2>
+      </div>
+      <div class="panel-body">
+        <ul class="snapshot-list">
+          <li>
+            <div class="snapshot-tag high">High</div>
+            <div class="snapshot-content">
+              <div class="snapshot-title">Cash Structuring Alerts</div>
+              <div class="snapshot-meta">
+                12 open alerts • Rule GB-001 • General Banking
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="snapshot-tag medium">Medium</div>
+            <div class="snapshot-content">
+              <div class="snapshot-title">Dormant Account Activity</div>
+              <div class="snapshot-meta">
+                7 open alerts • Rule GB-006 • General Banking
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="snapshot-tag high">High</div>
+            <div class="snapshot-content">
+              <div class="snapshot-title">Trade Based Anomalies</div>
+              <div class="snapshot-meta">
+                5 open alerts • Trade Based category • Cross-border trade
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel links-panel">
+      <div class="panel-header">
+        <h2>Quick Navigation</h2>
+      </div>
+      <div class="panel-body">
+        <div class="links-grid">
+          @for (link of quickLinks; track link.title) {
+            <button
+              type="button"
+              class="link-card"
+              (click)="navigateTo(link.route)"
+            >
+              <div class="link-icon">
+                <i class="{{ link.icon }}"></i>
+              </div>
+              <div class="link-content">
+                <div class="link-title">{{ link.title }}</div>
+                <div class="link-description">
+                  {{ link.description }}
+                </div>
+              </div>
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

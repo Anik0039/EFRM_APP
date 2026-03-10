@@ -22,7 +22,7 @@
         type="button"
         label="Add Category"
         icon="pi pi-plus"
-        class="primary-button"
+        class="outline-button add-category-btn"
         (click)="openAddModal()"
       ></button>
     </div>
@@ -199,7 +199,7 @@
         <div class="modal-footer">
           <button type="button" class="text-button" (click)="closeAddModal()">Cancel</button>
           <button type="button" class="secondary-button" (click)="closeAddModal()">Save as Draft</button>
-          <button type="button" class="primary-button" (click)="closeAddModal()">Submit for Approval</button>
+          <button type="button" class="primary-button submit-btn" (click)="closeAddModal()">Submit for Approval</button>
         </div>
       </div>
     </div>
