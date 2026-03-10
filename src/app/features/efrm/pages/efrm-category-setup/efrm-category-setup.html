@@ -1,0 +1,208 @@
+<div class="category-page">
+  <div class="category-header">
+    <div>
+      <h1>Suspicious Category Configuration</h1>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          placeholder="Search categories..."
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+      <select [(ngModel)]="statusFilter" class="status-filter">
+        <option value="All Status">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+      <button
+        pButton
+        type="button"
+        label="Add Category"
+        icon="pi pi-plus"
+        class="primary-button"
+        (click)="openAddModal()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="category-layout">
+    <div class="category-left">
+      <div class="select-card">
+        <div class="select-header">Select Category</div>
+        <select
+          [(ngModel)]="selectedCategoryId"
+          class="category-select"
+        >
+          <option [ngValue]="null">Choose a category...</option>
+          @for (cat of filteredCategories; track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+
+        <div class="left-stats">
+          <div class="left-stat total">
+            <span>Total Categories</span>
+            <strong>{{ totalCategories }}</strong>
+          </div>
+          <div class="left-stat active">
+            <span>Active Categories</span>
+            <strong>{{ activeCategories }}</strong>
+          </div>
+          <div class="left-stat no-rules">
+            <span>Categories with No Rules</span>
+            <strong>{{ categoriesWithNoRules }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category-right">
+      @if (!selectedCategory) {
+        <div class="empty-state">
+          <i class="pi pi-list"></i>
+          <h2>No Category Selected</h2>
+          <p>Please select a category from the dropdown to view details</p>
+        </div>
+      } @else {
+        <div class="detail-card">
+          <div class="detail-header">
+            <div class="detail-title">
+              <h2>{{ selectedCategory.name }}</h2>
+              <span
+                class="status-pill"
+                [class.active]="selectedCategory.status === 'Active'"
+                [class.inactive]="selectedCategory.status === 'Inactive'"
+              >
+                {{ selectedCategory.status }}
+              </span>
+            </div>
+            <div class="detail-actions">
+              <button pButton type="button" label="Edit" class="outline-button"></button>
+              <button pButton type="button" label="View Rules" class="outline-button "></button>
+              <button pButton type="button" label="Delete" class="outline-button "></button>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-col">
+              <div class="detail-row">
+                <span class="label">Category Code</span>
+                <span class="value">{{ selectedCategory.code }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Risk Domain</span>
+                <span class="value">{{ selectedCategory.riskDomain }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Number of Rules Linked</span>
+                <span class="value">{{ selectedCategory.rulesLinked }} Rules</span>
+              </div>
+            </div>
+            <div class="detail-col">
+              <div class="detail-row">
+                <span class="label">Created By</span>
+                <span class="value">{{ selectedCategory.createdBy }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Created Date</span>
+                <span class="value">{{ selectedCategory.createdDate }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">Last Modified</span>
+                <span class="value">{{ selectedCategory.lastModified }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-description">
+            <span class="label">Description</span>
+            <p class="value">
+              {{ selectedCategory.description }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (showAddModal) {
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Add New Category</h2>
+          <button type="button" class="modal-close" (click)="closeAddModal()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Category Name *</label>
+              <input
+                type="text"
+                placeholder="Enter category name"
+                [(ngModel)]="newCategoryName"
+              />
+            </div>
+            <div class="form-field">
+              <label>Category Code</label>
+              <input type="text" value="Auto-generated" readonly />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Risk Domain *</label>
+              <select [(ngModel)]="newCategoryRiskDomain">
+                <option value="">Select risk domain</option>
+                @for (domain of riskDomains; track domain) {
+                  <option [value]="domain">{{ domain }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field full">
+              <label>Description</label>
+              <textarea
+                rows="3"
+                placeholder="Enter category description"
+                [(ngModel)]="newCategoryDescription"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Effective Date</label>
+              <input
+                type="text"
+                placeholder="mm/dd/yyyy"
+                [(ngModel)]="newCategoryEffectiveDate"
+              />
+            </div>
+            <div class="form-field">
+              <label>Status</label>
+              <select [(ngModel)]="newCategoryStatus">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="text-button" (click)="closeAddModal()">Cancel</button>
+          <button type="button" class="secondary-button" (click)="closeAddModal()">Save as Draft</button>
+          <button type="button" class="primary-button" (click)="closeAddModal()">Submit for Approval</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+

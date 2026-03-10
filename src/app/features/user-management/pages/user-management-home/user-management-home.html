@@ -1,0 +1,157 @@
+<div class="um-page">
+  <!-- Header -->
+  <div class="um-header">
+    <div class="um-header-left">
+      <h1 class="um-title">User Management</h1>
+      <nav class="um-breadcrumb">
+        <a routerLink="/dashboard">Dashboard</a>
+        <i class="pi pi-angle-right"></i>
+        <span>Administration</span>
+        <i class="pi pi-angle-right"></i>
+        <span class="active">User Management</span>
+      </nav>
+    </div>
+    <div class="um-header-right">
+      <div class="um-search">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          placeholder="Search users..."
+          [value]="searchQuery()"
+          (input)="onSearch($event)"
+        />
+      </div>
+      <button class="btn-export" (click)="exportUsers()">
+        <i class="pi pi-download"></i>
+        <span>Export</span>
+      </button>
+      <button class="btn-add" (click)="addUser()">
+        <i class="pi pi-plus"></i>
+        <span>Add User</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="um-stats">
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Total Users</span>
+        <span class="stat-value">{{ totalUsers() }}</span>
+      </div>
+      <div class="stat-icon total">
+        <i class="pi pi-users"></i>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Active Users</span>
+        <span class="stat-value active-val">{{ activeUsers() }}</span>
+      </div>
+      <div class="stat-icon active">
+        <i class="pi pi-user-plus"></i>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-content">
+        <span class="stat-label">Inactive Users</span>
+        <span class="stat-value inactive-val">{{ inactiveUsers() }}</span>
+      </div>
+      <div class="stat-icon inactive">
+        <i class="pi pi-user-minus"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="um-filter-bar">
+    <span class="filter-label">Filter:</span>
+    <div class="filter-group">
+      <button
+        class="filter-btn"
+        [class.selected]="activeFilter() === 'all'"
+        (click)="setFilter('all')"
+      >
+        All Users
+      </button>
+      <button
+        class="filter-btn"
+        [class.selected]="activeFilter() === 'active'"
+        (click)="setFilter('active')"
+      >
+        Active
+      </button>
+      <button
+        class="filter-btn"
+        [class.selected]="activeFilter() === 'inactive'"
+        (click)="setFilter('inactive')"
+      >
+        Inactive
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="um-table-wrap">
+    <table class="um-table">
+      <thead>
+        <tr>
+          <!-- <th>USER ID</th> -->
+          <th>NAME</th>
+          <th>USERNAME</th>
+          <th>EMPLOYEE ID</th>
+          <th>DESIGNATION</th>
+          <th>ROLE</th>
+          <th>STATUS</th>
+          <th>ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of filteredUsers(); track user.userId) {
+          <tr>
+            <!-- <td class="cell-id">{{ user.userId }}</td> -->
+            <td class="cell-name">{{ user.name }}</td>
+            <td class="cell-username">{{ user.username }}</td>
+            <td>{{ user.employeeId }}</td>
+            <td>{{ user.designation }}</td>
+            <td>
+              <span class="role-badge">{{ user.role }}</span>
+            </td>
+            <td>
+              <div class="status-cell">
+                <button
+                  class="toggle-switch"
+                  [class.on]="user.active"
+                  (click)="toggleStatus(user)"
+                  [attr.aria-label]="user.active ? 'Deactivate' : 'Activate'"
+                >
+                  <span class="toggle-knob"></span>
+                </button>
+                <span
+                  class="status-text"
+                  [class.active]="user.active"
+                  [class.inactive]="!user.active"
+                >
+                  {{ user.active ? 'Active' : 'Inactive' }}
+                </span>
+              </div>
+            </td>
+            <td>
+              <button class="btn-edit" (click)="editUser(user)">
+                <i class="pi pi-pen-to-square"></i>
+                <span>Edit</span>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-row">
+              <i class="pi pi-inbox"></i>
+              <span>No users found</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

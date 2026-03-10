@@ -1,0 +1,414 @@
+<div class="rc-page">
+  <!-- Header -->
+  <div class="rc-header">
+    <div class="rc-header-left">
+      <button class="btn-back" (click)="goBack()">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+      <div>
+        <h1>Rule Configuration</h1>
+      </div>
+    </div>
+    <div class="rc-header-actions">
+      <button class="btn-outline"><i class="pi pi-history"></i> Rule History</button>
+      <button class="btn-outline"><i class="pi pi-clone"></i> Clone Rule</button>
+      <button class="btn-outline"><i class="pi pi-sitemap"></i> View Workflow</button>
+      <button class="btn-outline"><i class="pi pi-save"></i> Save as Draft</button>
+      <button class="btn-submit" (click)="submitRule()"><i class="pi pi-send"></i> Submit</button>
+    </div>
+  </div>
+
+  <!-- Body: 2-column layout -->
+  <div class="rc-body">
+    <!-- Left Column -->
+    <div class="rc-left">
+      <!-- Rule Information -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Information</h2>
+        <div class="rc-grid-2">
+          <div class="rc-field">
+            <label>Rule ID</label>
+            <input type="text" [value]="config.ruleId" readonly class="readonly" />
+          </div>
+          <div class="rc-field">
+            <label>Rule Name</label>
+            <input type="text" [(ngModel)]="config.ruleName" />
+          </div>
+        </div>
+        <div class="rc-grid-2">
+          <div class="rc-field">
+            <label>Category</label>
+            <select [(ngModel)]="config.category">
+              @for (cat of categoryOptions; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+          <div class="rc-field">
+            <label>Risk Level</label>
+            <select [(ngModel)]="config.riskLevel">
+              @for (risk of riskOptions; track risk) {
+                <option [value]="risk">{{ risk }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="rc-field">
+          <label>Scenario Description</label>
+          <textarea rows="3" [(ngModel)]="config.scenarioDescription"></textarea>
+        </div>
+        <div class="rc-field">
+          <label>Scenario Logic</label>
+          <textarea rows="3" class="code-textarea" [(ngModel)]="config.scenarioLogic"></textarea>
+        </div>
+      </div>
+
+      <!-- Rule Hyper Parameter Configuration -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Hyper Parameter Configuration</h2>
+        <div class="rc-grid-3">
+          @for (param of config.parameters; track param.key) {
+            <div class="rc-field">
+              <label>{{ param.label }}</label>
+              @if (param.type === 'number') {
+                <input type="number" [(ngModel)]="param.value" />
+              } @else if (param.type === 'dropdown') {
+                <select [(ngModel)]="param.value">
+                  @for (opt of param.options; track opt) {
+                    <option [value]="opt">{{ opt }}</option>
+                  }
+                </select>
+              } @else {
+                <input type="text" [(ngModel)]="param.value" />
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Rule Integration Settings -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Integration Settings</h2>
+        <div class="rc-grid-3">
+          <div class="rc-field">
+            <label>Rule Status</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="ruleStatus"
+                  value="Active"
+                  [(ngModel)]="config.ruleStatus"
+                />
+                <span>Active</span>
+              </label>
+              <label class="radio-label">
+                <input
+                  type="radio"
+                  name="ruleStatus"
+                  value="Inactive"
+                  [(ngModel)]="config.ruleStatus"
+                />
+                <span>Inactive</span>
+              </label>
+            </div>
+          </div>
+          <div class="rc-field">
+            <label>Integration Type</label>
+            <input type="text" [(ngModel)]="config.integrationType" />
+          </div>
+          <div class="rc-field">
+            <label>Integration Engine</label>
+            <select [(ngModel)]="config.integrationEngine">
+              @for (eng of integrationEngineOptions; track eng) {
+                <option [value]="eng">{{ eng }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modality Configuration -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Modality Configuration</h2>
+        <div class="rc-field">
+          <label>Alert Notification Method</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertMethods.email" />
+              <span>Email</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertMethods.sms" />
+              <span>SMS</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertMethods.inApp" />
+              <span>In-App Notification</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertMethods.dashboard" />
+              <span>Dashboard Alert</span>
+            </label>
+          </div>
+        </div>
+        <div class="rc-grid-2">
+          <div class="rc-field">
+            <label>Priority Level</label>
+            <select [(ngModel)]="config.priorityLevel">
+              @for (p of priorityOptions; track p) {
+                <option [value]="p">{{ p }}</option>
+              }
+            </select>
+          </div>
+          <div class="rc-field">
+            <label>Notification Frequency</label>
+            <select [(ngModel)]="config.notificationFrequency">
+              @for (f of frequencyOptions; track f) {
+                <option [value]="f">{{ f }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Execution Schedule -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Execution Schedule</h2>
+        <div class="rc-grid-3">
+          <div class="rc-field">
+            <label>Execution Mode</label>
+            <select [(ngModel)]="config.executionMode">
+              @for (e of executionOptions; track e) {
+                <option [value]="e">{{ e }}</option>
+              }
+            </select>
+          </div>
+          <div class="rc-field">
+            <label>Schedule Time</label>
+            <input type="text" [(ngModel)]="config.scheduleTime" />
+          </div>
+          <div class="rc-field">
+            <label>Data Source</label>
+            <select [(ngModel)]="config.dataSource">
+              @for (ds of dataSourceOptions; track ds) {
+                <option [value]="ds">{{ ds }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Alert Escalation -->
+      <div class="rc-card">
+        <div class="rc-card-header">
+          <h2 class="rc-card-title">Rule Alert Escalation</h2>
+          <button class="btn-add-recipient" (click)="addRecipient()">
+            <i class="pi pi-plus"></i> Add Recipient
+          </button>
+        </div>
+        @for (recipient of config.escalationRecipients; track $index) {
+          <div class="escalation-row">
+            <div class="rc-field">
+              <label>Employee ID</label>
+              <input type="text" [(ngModel)]="recipient.employeeId" />
+            </div>
+            <div class="rc-field">
+              <label>Designation</label>
+              <select [(ngModel)]="recipient.designation">
+                @for (d of designationOptions; track d) {
+                  <option [value]="d">{{ d }}</option>
+                }
+              </select>
+            </div>
+            <div class="rc-field">
+              <label>Escalation Level</label>
+              <select [(ngModel)]="recipient.level">
+                @for (l of levelOptions; track l) {
+                  <option [value]="l">{{ l }}</option>
+                }
+              </select>
+            </div>
+            <button class="btn-delete" (click)="removeRecipient($index)">
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="rc-right">
+      <!-- Rule Workflow -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Workflow</h2>
+        <div class="workflow-steps">
+          <div class="workflow-step">
+            <div
+              class="workflow-icon"
+              [class.completed]="config.workflow.makerStatus === 'completed'"
+              [class.pending]="config.workflow.makerStatus === 'pending'"
+              [class.awaiting]="config.workflow.makerStatus === 'awaiting'"
+            >
+              @if (config.workflow.makerStatus === 'completed') {
+                <i class="pi pi-check"></i>
+              } @else if (config.workflow.makerStatus === 'pending') {
+                <i class="pi pi-clock"></i>
+              } @else {
+                <i class="pi pi-circle"></i>
+              }
+            </div>
+            <div class="workflow-info">
+              <span class="workflow-label">Maker Submission</span>
+              <span class="workflow-sub">{{
+                config.workflow.makerStatus === 'completed'
+                  ? 'Completed by ' + config.workflow.makerBy
+                  : config.workflow.makerBy
+              }}</span>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div
+              class="workflow-icon"
+              [class.completed]="config.workflow.checkerStatus === 'completed'"
+              [class.pending]="config.workflow.checkerStatus === 'pending'"
+              [class.awaiting]="config.workflow.checkerStatus === 'awaiting'"
+            >
+              @if (config.workflow.checkerStatus === 'completed') {
+                <i class="pi pi-check"></i>
+              } @else if (config.workflow.checkerStatus === 'pending') {
+                <i class="pi pi-clock"></i>
+              } @else {
+                <i class="pi pi-circle"></i>
+              }
+            </div>
+            <div class="workflow-info">
+              <span class="workflow-label">Checker Approval</span>
+              <span class="workflow-sub">{{ config.workflow.checkerBy }}</span>
+            </div>
+          </div>
+          <div class="workflow-step">
+            <div
+              class="workflow-icon"
+              [class.completed]="config.workflow.activationStatus === 'completed'"
+              [class.pending]="config.workflow.activationStatus === 'pending'"
+              [class.awaiting]="config.workflow.activationStatus === 'awaiting'"
+            >
+              @if (config.workflow.activationStatus === 'completed') {
+                <i class="pi pi-check"></i>
+              } @else if (config.workflow.activationStatus === 'pending') {
+                <i class="pi pi-clock"></i>
+              } @else {
+                <i class="pi pi-circle"></i>
+              }
+            </div>
+            <div class="workflow-info">
+              <span class="workflow-label">Rule Activation</span>
+              <span class="workflow-sub">{{
+                config.workflow.activationStatus === 'completed' ? 'Activated' : 'Awaiting approval'
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Simulation Panel -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Simulation Panel</h2>
+        <div class="rc-field">
+          <label>Test Data Range</label>
+          <select [(ngModel)]="config.simulation.testRange">
+            @for (tr of testRangeOptions; track tr) {
+              <option [value]="tr">{{ tr }}</option>
+            }
+          </select>
+        </div>
+        <button class="btn-simulate" (click)="runSimulation()">
+          <i class="pi pi-play"></i> Run Simulation
+        </button>
+        <div class="sim-results">
+          <span class="sim-results-title">Last Simulation Results</span>
+          <div class="sim-grid">
+            <div class="sim-item">
+              <span class="sim-label">Alerts Generated:</span>
+              <span class="sim-value">{{ config.simulation.alertsGenerated }}</span>
+            </div>
+            <div class="sim-item">
+              <span class="sim-label">False Positives:</span>
+              <span class="sim-value">{{ config.simulation.falsePositives }}</span>
+            </div>
+            <div class="sim-item">
+              <span class="sim-label">Accuracy:</span>
+              <span class="sim-value">{{ config.simulation.accuracy }}%</span>
+            </div>
+            <div class="sim-item">
+              <span class="sim-label">Processing Time:</span>
+              <span class="sim-value">{{ config.simulation.processingTime }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule Monitoring Statistics -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Rule Monitoring Statistics</h2>
+        <div class="monitoring-stats">
+          <div class="mon-row">
+            <div class="mon-box high">
+              <span class="mon-value">{{ config.monitoring.highRiskAlerts }}</span>
+              <span class="mon-label">High Risk Alerts</span>
+            </div>
+            <div class="mon-box medium">
+              <span class="mon-value">{{ config.monitoring.mediumRiskAlerts }}</span>
+              <span class="mon-label">Medium Risk</span>
+            </div>
+          </div>
+          <div class="mon-accuracy">
+            <span class="mon-acc-value">{{ config.monitoring.detectionAccuracy }}%</span>
+            <span class="mon-acc-label">Detection Accuracy</span>
+          </div>
+          <div class="mon-footer">
+            <div class="mon-footer-item">
+              <span>Last Updated:</span>
+              <span>{{ config.monitoring.lastUpdated }}</span>
+            </div>
+            <div class="mon-footer-item">
+              <span>Total Transactions:</span>
+              <span>{{ config.monitoring.totalTransactions | number }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alert Sequence -->
+      <div class="rc-card">
+        <h2 class="rc-card-title">Alert Sequence</h2>
+        <div class="rc-field">
+          <label>Sequence Type</label>
+          <select [(ngModel)]="config.sequenceType">
+            @for (s of sequenceOptions; track s) {
+              <option [value]="s">{{ s }}</option>
+            }
+          </select>
+        </div>
+        <div class="rc-field">
+          <!-- <label>Alert Recipients</label> -->
+          <div class="checkbox-group vertical">
+            <!-- <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertRecipients.first" />
+              <span>1st Person</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertRecipients.second" />
+              <span>2nd Person</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [(ngModel)]="config.alertRecipients.third" />
+              <span>3rd Person</span>
+            </label> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

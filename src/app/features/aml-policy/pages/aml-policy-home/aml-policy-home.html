@@ -1,0 +1,55 @@
+<div class="module-page">
+  <div class="module-header">
+    <div class="module-title">
+      <div class="module-icon" style="background:#ecfdf5">
+        <i class="pi pi-book" style="color:#059669;font-size:1.5rem"></i>
+      </div>
+      <div>
+        <h1>AML Role Policy</h1>
+        <p>Anti-Money Laundering rules, risk policies, and regulatory compliance management</p>
+      </div>
+    </div>
+    <a pButton label="Back to Home" icon="pi pi-arrow-left" severity="secondary" routerLink="/dashboard"></a>
+  </div>
+
+  <div class="stats-row">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-card" [style.border-left-color]="stat.color">
+        <div class="stat-icon" [style.background]="stat.bg">
+          <i [class]="stat.icon" [style.color]="stat.color"></i>
+        </div>
+        <div>
+          <div class="stat-value" [style.color]="stat.color">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="sub-grid">
+    <div class="sub-card">
+      <i class="pi pi-file-edit sub-icon" style="color:#059669"></i>
+      <h3>Policy Management</h3>
+      <p>Define, version, and manage AML/CFT policies aligned with Bangladesh Bank and BFIU directives.</p>
+      <span class="coming-soon">Coming Soon</span>
+    </div>
+    <div class="sub-card">
+      <i class="pi pi-flag sub-icon" style="color:#e53e3e"></i>
+      <h3>STR / SAR Reporting</h3>
+      <p>Automated generation and submission of Suspicious Transaction Reports (STR) and Suspicious Activity Reports (SAR).</p>
+      <span class="coming-soon">Coming Soon</span>
+    </div>
+    <div class="sub-card">
+      <i class="pi pi-chart-bar sub-icon" style="color:#1a56db"></i>
+      <h3>Risk Scoring</h3>
+      <p>Dynamic customer and transaction risk scoring using KYC data, behavioral profiles, and AML parameters.</p>
+      <span class="coming-soon">Coming Soon</span>
+    </div>
+    <div class="sub-card">
+      <i class="pi pi-check-square sub-icon" style="color:#7c3aed"></i>
+      <h3>Compliance Monitoring</h3>
+      <p>Continuous monitoring for regulatory compliance, audit readiness, and trade-based money laundering detection.</p>
+      <span class="coming-soon">Coming Soon</span>
+    </div>
+  </div>
+</div>

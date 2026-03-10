@@ -1,0 +1,19 @@
+@import 'primeicons/primeicons.css';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: Inter, Arial, sans-serif;
+  background: var(--p-surface-50);
+  color: var(--p-text-color);
+}
+
+body {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}

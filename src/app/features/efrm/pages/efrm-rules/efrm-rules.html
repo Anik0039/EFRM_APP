@@ -1,0 +1,154 @@
+<div class="rule-page">
+  <div class="rule-header">
+    <div class="rule-title">
+      <div class="rule-icon">
+        <i class="pi pi-sliders-h"></i>
+      </div>
+      <div>
+        <h1>Rule Dashboard</h1>
+        <p>Manage suspicious transaction monitoring rules across all banking categories.</p>
+      </div>
+    </div>
+    <div class="rule-header-actions">
+      <button
+        pButton
+        type="button"
+        label="Export Rules"
+        icon="pi pi-download"
+        class="p-button-outlined"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Import Rule"
+        icon="pi pi-upload"
+        class="p-button-outlined"
+      ></button>
+      <button
+        pButton
+        type="button"
+        label="Add New Rule"
+        icon="pi pi-plus"
+        class="primary-button"
+        (click)="goToRuleEngine()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="summary-label">Total Rules</div>
+      <div class="summary-value">{{ stats.totalRules }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Active Rules</div>
+      <div class="summary-value green">{{ stats.activeRules }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Built-in Rules</div>
+      <div class="summary-value blue">{{ stats.builtInRules }}</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Dynamic Rules</div>
+      <div class="summary-value purple">{{ stats.dynamicRules }}</div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-box">
+      <i class="pi pi-search"></i>
+      <input type="text" placeholder="Search by rule name or ID" [(ngModel)]="searchTerm" />
+    </div>
+    <div class="filters">
+      <div class="filter">
+        <label>Category</label>
+        <select [(ngModel)]="selectedCategory">
+          <option value="All Categories">All Categories</option>
+          @for (category of categories; track category) {
+            <option [value]="category">{{ category }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter">
+        <label>Rule Type</label>
+        <select [(ngModel)]="selectedRuleType">
+          <option value="All Types">All Types</option>
+          @for (type of ruleTypes; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
+        </select>
+      </div>
+      <div class="filter">
+        <label>Status</label>
+        <select [(ngModel)]="selectedStatus">
+          <option value="All Status">All Status</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="rule-table">
+      <thead>
+        <tr>
+          <th>Rule ID</th>
+          <th>Rule Name</th>
+          <th>Category</th>
+          <th>Rule Type</th>
+          <th>Risk Level</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rule of filteredRules; track rule.id) {
+          <tr class="clickable-row" (click)="openRule(rule)">
+            <td>{{ rule.id }}</td>
+            <td>{{ rule.name }}</td>
+            <td>
+              <span class="category-tag" [ngClass]="rule.categoryClass">
+                {{ rule.category }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="type-tag"
+                [ngClass]="{
+                  builtIn: rule.type === 'Built-in',
+                  dynamic: rule.type === 'Dynamic',
+                }"
+              >
+                {{ rule.type }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="risk-tag"
+                [ngClass]="{
+                  high: rule.risk === 'High',
+                  medium: rule.risk === 'Medium',
+                }"
+              >
+                {{ rule.risk }}
+              </span>
+            </td>
+            <td>
+              <label class="switch">
+                <input type="checkbox" [checked]="rule.active" (change)="toggleStatus(rule)" />
+                <span class="slider"></span>
+              </label>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state"></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <div class="table-footer">
+      <div>Showing {{ filteredRules.length }} of {{ stats.totalRules }} results</div>
+    </div>
+  </div>
+</div>

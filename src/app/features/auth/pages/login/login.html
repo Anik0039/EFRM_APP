@@ -1,0 +1,72 @@
+<div class="login-page">
+  <div class="login-card">
+    <!-- ERA Logo -->
+    <div class="brand">
+      <div class="brand-logo-row">
+        <!-- ERA Icon -->
+        <div class="brand-icon">
+          <img src="/Logo.png" alt="ERA Logo Icon" />
+        </div>
+      </div>
+
+      <!-- App subtitle -->
+      <p class="brand-subtitle">Enterprise Fraud &amp; Risk Management</p>
+    </div>
+
+    <!-- Form -->
+    <div class="form-body">
+      <div class="field">
+        <label for="username">Username <span class="req">*</span></label>
+        <input
+          id="username"
+          pInputText
+          class="era-input"
+          [(ngModel)]="username"
+          placeholder="Enter username"
+          autocomplete="username"
+          (keydown.enter)="login()"
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Password <span class="req">*</span></label>
+        <div class="pw-wrap">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            pInputText
+            class="era-input"
+            [(ngModel)]="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            (keydown.enter)="login()"
+          />
+          <button
+            type="button"
+            class="pw-toggle"
+            (click)="togglePassword()"
+            tabindex="-1"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            <i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="error-strip">
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
+      }
+
+      <button type="button" class="login-btn" [disabled]="loading()" (click)="login()">
+        @if (loading()) {
+          <i class="pi pi-spin pi-spinner"></i>
+        } @else {
+          Login
+        }
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div
+  class="app-shell"
+  [class.sidebar-collapsed]="sidebarCollapsed()"
+  [class.no-sidebar]="!showSidebar()"
+>
+  @if (showSidebar()) {
+    <app-sidebar
+      [collapsed]="sidebarCollapsed()"
+      [mobileOpen]="sidebarMobileOpen()"
+    ></app-sidebar>
+
+    @if (sidebarMobileOpen()) {
+      <button
+        type="button"
+        class="sidebar-backdrop"
+        (click)="closeMobileSidebar()"
+        (keydown.escape)="closeMobileSidebar()"
+        aria-label="Close sidebar"
+      ></button>
+    }
+  }
+
+  <div class="main-area">
+    <app-header
+      [showMenuToggle]="showSidebar()"
+      (menuToggle)="toggleSidebar()"
+    ></app-header>
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

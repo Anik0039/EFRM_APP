@@ -1,0 +1,48 @@
+<div class="home-page">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="welcome-text">
+      <h1>Welcome back, <span class="username">{{ userName }}</span></h1>
+      <p>{{ userRole }} &nbsp;·&nbsp; Enterprise Fraud &amp; Risk Management Portal</p>
+    </div>
+    <div class="banner-icon">
+      <i class="pi pi-shield"></i>
+    </div>
+  </div>
+
+  <!-- Section Label -->
+  <div class="section-label">
+    <i class="pi pi-th-large"></i>
+    <span>System Modules</span>
+  </div>
+
+  <!-- Module Cards -->
+  <div class="module-grid">
+    @for (mod of modules; track mod.title) {
+      <div class="module-card" [style.--accent]="mod.accentColor">
+        <div class="card-top">
+          <div class="card-icon" [style.background]="mod.iconBg">
+            <i [class]="mod.icon" [style.color]="mod.iconColor"></i>
+          </div>
+          <div class="card-arrow">
+            <i class="pi pi-arrow-right"></i>
+          </div>
+        </div>
+
+        <h2 class="card-title">{{ mod.title }}</h2>
+        <p class="card-desc">{{ mod.description }}</p>
+
+        <div class="card-tags">
+          @for (tag of mod.tags; track tag) {
+            <span class="tag" [style.background]="mod.iconBg" [style.color]="mod.iconColor">{{ tag }}</span>
+          }
+        </div>
+
+        <button class="card-btn" (click)="navigate(mod)">
+          <span>{{ mod.externalUrl ? 'Open Module' : 'Enter Module' }}</span>
+          <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+    }
+  </div>
+</div>

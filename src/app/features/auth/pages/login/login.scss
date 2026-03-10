@@ -1,0 +1,212 @@
+/* =============================================
+   Login Page — ERA Infotech EFRM
+   ============================================= */
+
+.login-page {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+/* ---- Card ---- */
+.login-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow:
+    0 4px 32px rgba(27, 73, 138, 0.1),
+    0 1px 6px rgba(0, 0, 0, 0.06);
+  padding: 2.75rem 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ---- Brand / Logo ---- */
+.brand {
+  text-align: center;
+  margin-bottom: 2.25rem;
+}
+
+.brand-logo-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.brand-icon img {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+
+.brand-divider {
+  width: 1.5px;
+  height: 42px;
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+  gap: 1px;
+}
+
+.brand-era {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #1b498a;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.brand-infotech {
+  font-size: 0.58rem;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.brand-subtitle {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Form ---- */
+.form-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.req {
+  color: #e53e3e;
+}
+
+/* Override PrimeNG input base styles */
+.era-input.p-inputtext,
+input.era-input {
+  width: 100%;
+  background: #eef1fb !important;
+  border: 1.5px solid #e2e8f5 !important;
+  border-radius: 3px !important;
+  padding: 0.68rem 0.95rem !important;
+  font-size: 0.93rem !important;
+  color: #1f2937 !important;
+  outline: none !important;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s,
+    background 0.18s !important;
+  box-shadow: none !important;
+}
+
+.era-input.p-inputtext::placeholder,
+input.era-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.era-input.p-inputtext:focus,
+input.era-input:focus {
+  border-color: #1b498a !important;
+  background: #f5f8ff !important;
+  box-shadow: 0 0 0 3px rgba(27, 73, 138, 0.12) !important;
+}
+
+/* ---- Password wrapper ---- */
+.pw-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pw-wrap input {
+  padding-right: 2.9rem !important;
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 0.8rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.18s;
+  z-index: 1;
+}
+
+.pw-toggle:hover {
+  color: #1b498a;
+}
+
+/* ---- Error ---- */
+.error-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  color: #c53030;
+  font-weight: 500;
+}
+
+/* ---- Login Button ---- */
+.login-btn {
+  width: 100%;
+  background: #1b498a;
+  color: #ffffff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.76rem 1rem;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 0.15rem;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #153866;
+  box-shadow: 0 4px 16px rgba(27, 73, 138, 0.28);
+}
+
+.login-btn:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}

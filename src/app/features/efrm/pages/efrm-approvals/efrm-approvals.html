@@ -1,0 +1,338 @@
+<div class="approvals-page">
+  <div class="approvals-header">
+    <div class="approvals-header-text">
+      <h1>Category &amp; Rule Approval</h1>
+    </div>
+    <div class="header-tab-switch">
+      <div class="tab-switch">
+        <button
+          type="button"
+          class="tab-button"
+          [class.active]="activeTabIsRule"
+          (click)="setTab('Rule')"
+        >
+          Rule
+        </button>
+        <button
+          type="button"
+          class="tab-button"
+          [class.active]="!activeTabIsRule"
+          (click)="setTab('Category')"
+        >
+          Category
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="approvals-filters">
+    <div class="filter-group">
+      <label>Approval Status</label>
+      <select [(ngModel)]="statusFilter">
+        <option value="Pending">Pending</option>
+        <option value="Approved">Approved</option>
+        <option value="Rejected">Rejected</option>
+        <option value="All">All</option>
+      </select>
+    </div>
+
+    <div class="filter-group search-group">
+      <label>Search</label>
+      <div class="search-box">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          placeholder="Search by name, ID, or maker..."
+          [(ngModel)]="searchTerm"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="approvals-table-card">
+    <table class="approvals-table" *ngIf="activeTabIsRule; else categoryTable">
+      <thead>
+        <tr>
+          <th>Rule ID</th>
+          <th>Rule Name</th>
+          <th>Category</th>
+          <th>Condition Logic</th>
+          <th>Risk Level</th>
+          <th>Created By</th>
+          <th>Created Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rule of filteredRules; track rule.id) {
+          <tr (click)="openRuleDetails(rule)">
+            <td>{{ rule.id }}</td>
+            <td>{{ rule.name }}</td>
+            <td>{{ rule.category }}</td>
+            <td>{{ rule.conditionLogic }}</td>
+            <td>
+              <span
+                class="risk-pill"
+                [class.high]="rule.riskLevel === 'High'"
+                [class.medium]="rule.riskLevel === 'Medium'"
+                [class.low]="rule.riskLevel === 'Low'"
+              >
+                {{ rule.riskLevel }}
+              </span>
+            </td>
+            <td>{{ rule.createdBy }}</td>
+            <td>{{ rule.createdDate }}</td>
+            <td>
+              <span
+                class="status-pill"
+                [class.pending]="rule.status === 'Pending'"
+                [class.approved]="rule.status === 'Approved'"
+                [class.rejected]="rule.status === 'Rejected'"
+              >
+                {{ rule.status }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-row">No records found</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <ng-template #categoryTable>
+      <table class="approvals-table">
+        <thead>
+          <tr>
+            <th>Category Code</th>
+            <th>Category Name</th>
+            <th>Risk Domain</th>
+            <th>Rules Linked</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cat of filteredCategories; track cat.code) {
+            <tr (click)="openCategoryDetails(cat)">
+              <td>{{ cat.code }}</td>
+              <td>{{ cat.name }}</td>
+              <td>{{ cat.riskDomain }}</td>
+              <td>{{ cat.rulesLinked }}</td>
+              <td>{{ cat.createdBy }}</td>
+              <td>{{ cat.createdDate }}</td>
+              <td>
+                <span
+                  class="status-pill"
+                  [class.pending]="cat.status === 'Pending'"
+                  [class.approved]="cat.status === 'Approved'"
+                  [class.rejected]="cat.status === 'Rejected'"
+                >
+                  {{ cat.status }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="empty-row">No records found</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </ng-template>
+  </div>
+
+  @if (selectedRule || selectedCategory) {
+    <div class="details-overlay">
+      <div class="details-backdrop" (click)="closeDetails()"></div>
+
+      <div class="details-panel">
+        <div class="details-header">
+          <div class="details-title">
+            @if (selectedRule) {
+              <h2>Rule Details</h2>
+            } @else if (selectedCategory) {
+              <h2>Category Details</h2>
+            }
+          </div>
+          <button type="button" class="close-btn" (click)="closeDetails()">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div class="details-body" *ngIf="selectedRule">
+          <div class="details-grid">
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Rule ID</span>
+                <span class="value">{{ selectedRule.id }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Rule Name</span>
+                <span class="value">{{ selectedRule.name }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Category</span>
+                <span class="value">{{ selectedRule.category }}</span>
+              </div>
+            </div>
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Threshold</span>
+                <span class="value">{{ selectedRule.threshold }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Risk Level</span>
+                <span class="value">
+                  <span
+                    class="risk-pill"
+                    [class.high]="selectedRule.riskLevel === 'High'"
+                    [class.medium]="selectedRule.riskLevel === 'Medium'"
+                    [class.low]="selectedRule.riskLevel === 'Low'"
+                  >
+                    {{ selectedRule.riskLevel }}
+                  </span>
+                </span>
+              </div>
+              <div class="field">
+                <span class="label">Status</span>
+                <span class="value">
+                  <span
+                    class="status-pill"
+                    [class.pending]="selectedRule.status === 'Pending'"
+                    [class.approved]="selectedRule.status === 'Approved'"
+                    [class.rejected]="selectedRule.status === 'Rejected'"
+                  >
+                    {{ selectedRule.status }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field block-field">
+            <span class="label">Condition Logic</span>
+            <div class="box">{{ selectedRule.conditionLogic }}</div>
+          </div>
+
+          <div class="field block-field">
+            <span class="label">Rule Description</span>
+            <p class="text">{{ selectedRule.description }}</p>
+          </div>
+
+          <div class="details-grid">
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Created By</span>
+                <span class="value">{{ selectedRule.createdBy }}</span>
+              </div>
+            </div>
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Created Date</span>
+                <span class="value">{{ selectedRule.createdDate }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field block-field">
+            <span class="label">Checker Comment (optional)</span>
+            <textarea
+              rows="3"
+              [(ngModel)]="checkerComment"
+              placeholder="Add your comments here..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="details-body" *ngIf="selectedCategory">
+          <div class="details-grid">
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Category Code</span>
+                <span class="value">{{ selectedCategory.code }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Category Name</span>
+                <span class="value">{{ selectedCategory.name }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Risk Domain</span>
+                <span class="value">{{ selectedCategory.riskDomain }}</span>
+              </div>
+            </div>
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Rules Linked</span>
+                <span class="value">{{ selectedCategory.rulesLinked }}</span>
+              </div>
+              <div class="field">
+                <span class="label">Status</span>
+                <span class="value">
+                  <span
+                    class="status-pill"
+                    [class.pending]="selectedCategory.status === 'Pending'"
+                    [class.approved]="selectedCategory.status === 'Approved'"
+                    [class.rejected]="selectedCategory.status === 'Rejected'"
+                  >
+                    {{ selectedCategory.status }}
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field block-field">
+            <span class="label">Description</span>
+            <p class="text">{{ selectedCategory.description }}</p>
+          </div>
+
+          <div class="details-grid">
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Created By</span>
+                <span class="value">{{ selectedCategory.createdBy }}</span>
+              </div>
+            </div>
+            <div class="details-section">
+              <div class="field">
+                <span class="label">Created Date</span>
+                <span class="value">{{ selectedCategory.createdDate }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field block-field">
+            <span class="label">Checker Comment (optional)</span>
+            <textarea
+              rows="3"
+              [(ngModel)]="checkerComment"
+              placeholder="Add your comments here..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="details-footer">
+          <button
+            pButton
+            type="button"
+            label="Approve"
+            icon="pi pi-check"
+            class="approve-button"
+            (click)="approve()"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Reject"
+            icon="pi pi-times"
+            class="reject-button"
+            (click)="reject()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

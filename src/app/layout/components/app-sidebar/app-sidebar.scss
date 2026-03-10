@@ -1,0 +1,135 @@
+/* =============================================
+   App Sidebar — EFRM
+   ============================================= */
+
+.sidebar {
+  background: #ffffff;
+  border-right: 1px solid #e9ecf5;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.sidebar.collapsed {
+  display: none;
+}
+
+/* ---- Brand ---- */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  height: 64px;
+  padding: 0 1rem;
+  border-bottom: 1px solid #e9ecf5;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.brand-logo {
+  height: 36px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ---- Nav ---- */
+.sidebar-nav {
+  flex: 1;
+  padding: 0.5rem 0 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav-section {
+  padding: 0 0 0.5rem;
+}
+
+.section-label {
+  display: block;
+  padding: 0.65rem 1rem 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #9ca3af;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---- Nav item ---- */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.58rem 1rem;
+  cursor: pointer;
+  border-radius: 0;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.nav-item:hover {
+  background: #f0f4ff;
+  color: #1b498a;
+}
+
+.nav-item.active {
+  background: #eff3ff;
+  color: #1b498a;
+  font-weight: 600;
+  border-left: 3px solid #1b498a;
+  padding-left: calc(1rem - 3px);
+}
+
+.nav-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.nav-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 991px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.14);
+    display: flex;
+  }
+
+  .sidebar.collapsed {
+    display: flex;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 575px) {
+  .sidebar {
+    width: 86%;
+  }
+}

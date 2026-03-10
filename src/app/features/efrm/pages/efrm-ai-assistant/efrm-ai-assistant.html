@@ -1,0 +1,70 @@
+<div class="chat-page">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div class="chat-avatar">
+        <i class="pi pi-sparkles"></i>
+      </div>
+      <div>
+        <h1>EFRM AI Assistant</h1>
+        <span class="chat-status">
+          <span class="status-dot"></span>
+          Online — Ready to assist
+        </span>
+      </div>
+    </div>
+    <div class="chat-header-right">
+      <button class="btn-icon" title="Clear chat" (click)="clearChat()">
+        <i class="pi pi-trash"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Body -->
+  <div class="chat-body" #chatBody>
+    @for (msg of messages(); track msg.id) {
+      <div class="chat-row" [class.user]="msg.role === 'user'" [class.assistant]="msg.role === 'assistant'">
+        @if (msg.role === 'assistant') {
+          <div class="msg-avatar">
+            <i class="pi pi-sparkles"></i>
+          </div>
+        }
+        <div class="msg-bubble" [class.user-bubble]="msg.role === 'user'" [class.bot-bubble]="msg.role === 'assistant'">
+          @if (msg.typing) {
+            <div class="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          } @else {
+            <div class="msg-text">{{ msg.text }}</div>
+            <span class="msg-time">{{ formatTime(msg.timestamp) }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Suggestions -->
+  <div class="chat-suggestions">
+    @for (chip of suggestions; track chip.label) {
+      <button class="suggestion-chip" (click)="useSuggestion(chip)">
+        {{ chip.label }}
+      </button>
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-bar">
+    <div class="chat-input-wrap">
+      <textarea
+        rows="1"
+        placeholder="Ask about rules, alerts, compliance, risk scoring..."
+        [(ngModel)]="userInput"
+        (keydown)="onKeyDown($event)"
+      ></textarea>
+      <button class="btn-send" (click)="sendMessage()" [disabled]="!userInput.trim()">
+        <i class="pi pi-send"></i>
+      </button>
+    </div>
+    <span class="input-hint">Press Enter to send, Shift+Enter for new line</span>
+  </div>
+</div>
