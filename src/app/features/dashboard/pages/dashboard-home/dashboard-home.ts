@@ -67,7 +67,7 @@ export class DashboardHomeComponent {
       iconBg: '#eef3fa',
       accentColor: '#1b498a',
       route: '',
-      externalUrl: 'https://efrm-rule-engine.vercel.app/gorules?policy_id=Transaction_2',
+      externalUrl: 'https://efrm-rule-engine.vercel.app/gorules',
       tags: ['STR / SAR', 'Risk Scoring', 'Compliance'],
     },
   ];

@@ -28,7 +28,7 @@ interface Rule {
 export class EfrmRulesComponent {
   private readonly router = inject(Router);
   private readonly goRulesUrl =
-    'https://efrm-rule-engine.vercel.app/gorules?policy_id=Transaction_2';
+    'https://efrm-rule-engine.vercel.app/gorules';
 
   allRules: Rule[] = [
     // ── 5 Primary Rules (from Bangladesh Bank Guideline) ──
