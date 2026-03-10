@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { ReportGeneratorService } from '../../../../core/services/report-generator.service';
 
 type AlertSection = 'customer' | 'transaction';
 
@@ -51,6 +52,7 @@ export class EfrmAlertDetailsComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
   private readonly confirmationService = inject(ConfirmationService);
+  private readonly reportGenerator = inject(ReportGeneratorService);
 
   alertId = '';
   analystComments = '';
@@ -404,7 +406,8 @@ export class EfrmAlertDetailsComponent implements OnInit {
     this.messageService.add({
       severity: 'info',
       summary: 'Download Started',
-      detail: `Report for ${this.alert.alertId} is being generated.`,
+      detail: `Generating report for ${this.alert.alertId}...`,
     });
+    this.reportGenerator.generateReport(this.alert);
   }
 }
